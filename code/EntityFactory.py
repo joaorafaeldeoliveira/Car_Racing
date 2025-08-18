@@ -11,9 +11,8 @@ class EntityFactory:
       case 'Level1Bg':
         list_bg = []
         for i in range(3):
-          # Position backgrounds to create seamless scrolling
-          y_position = -WIN_HEIGHT * i  # Stack them vertically off-screen
-          list_bg.append(Background(f'Level1Bg{i}', (0, y_position)))
+          list_bg.append(Background(f'Level1Bg{i}', (0, 0)))
+          list_bg.append(Background(f'Level1Bg{i}', (0, WIN_HEIGHT)))
         return list_bg
 
       case 'Player1':
