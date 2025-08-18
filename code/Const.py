@@ -15,7 +15,7 @@ WIN_HEIGHT = 512
 MENU_OPTION = ('NEW GAME 1P', 'NEW GAME 2P - COOPERATIVE',
                'NEW GAME 2P - COMPETITIVE', 'SCORE', 'EXIT')
 
-ENTITY_SPEED = {'Level1Bg0': 4, 'Level1Bg1': 0, 'Level1Bg2': 0, 'Player1': 3}
+ENTITY_SPEED = {'Level1Bg0': 4, 'Level1Bg1': 4, 'Level1Bg2': 4, 'Player1': 3}
 
 PLAYER_KEY_UP = {'Player1': pygame.K_UP, 'Player2': pygame.K_w}
 PLAYER_KEY_DOWN = {'Player1': pygame.K_DOWN, 'Player2': pygame.K_s}

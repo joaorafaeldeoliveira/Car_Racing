@@ -9,5 +9,5 @@ class Background(Entity):
 
   def move(self):
     self.rect.centery -= ENTITY_SPEED[self.name]
-    if self.rect.top <= 0:
-      self.rect.bottom = WIN_HEIGHT
+    if self.rect.top <= WIN_HEIGHT:
+      self.rect.bottom = 0

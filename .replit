@@ -22,10 +22,9 @@ args = "Car Racing Game"
 name = "Car Racing Game"
 author = "agent"
 
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "pip install pygame numpy && python main.py"
-waitForPort = 5000
-
 [workflows.workflow.metadata]
 outputType = "vnc"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python main.py"
