@@ -1,5 +1,5 @@
 import pygame
-from code.Const import WIN_HEIGHT, WIN_WIDTH, MENU_OPTION, C_WHITE, C_YELLOW, C_ORANGE
+from code.Const import WIN_HEIGHT, WIN_WIDTH, MENU_OPTION, C_WHITE, C_YELLOW, C_ORANGE, C_RED, C_BLACK
 from pygame import Surface, Rect
 from pygame.font import Font
 
@@ -17,16 +17,16 @@ class Menu:
     # pygame.mixer_music.play(-1)
     while True:
       self.window.blit(source=self.surf, dest=self.rect)
-      self.menu_text(50, "CAR", C_ORANGE, ((WIN_WIDTH / 2), 70))
-      self.menu_text(50, "RACING", C_ORANGE, ((WIN_WIDTH / 2), 120))
+      self.menu_text(50, "CAR", C_RED, ((WIN_WIDTH / 2), 70))
+      self.menu_text(50, "RACING", C_RED, ((WIN_WIDTH / 2), 120))
 
       for i in range(len(MENU_OPTION)):
         if i == menu_option:
-          self.menu_text(20, MENU_OPTION[i], C_YELLOW,
-                         ((WIN_WIDTH / 2), 200 + 25 * i))
+          self.menu_text(20, MENU_OPTION[i], C_ORANGE,
+                         ((WIN_WIDTH / 2), 250 + 25 * i))
         else:
-          self.menu_text(20, MENU_OPTION[i], C_WHITE,
-                         ((WIN_WIDTH / 2), 200 + 25 * i))
+          self.menu_text(20, MENU_OPTION[i], C_BLACK,
+                         ((WIN_WIDTH / 2), 250 + 25 * i))
       pygame.display.flip()
 
       for event in pygame.event.get():

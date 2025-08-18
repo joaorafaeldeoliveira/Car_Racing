@@ -6,6 +6,8 @@ C_YELLOW = (255, 255, 128)
 C_WHITE = (255, 255, 255)
 C_GREEN = (0, 128, 0)
 C_CYAN = (0, 128, 128)
+C_RED = (255, 0, 0)
+C_BLACK =(0, 0, 0)
 
 #Medidas
 WIN_WIDTH = 512
@@ -21,8 +23,8 @@ ENTITY_SPEED = {
     'Level1Bg2': 2,
     'Player1': 3,
     'Player2': 3,
-    'Enemy1': 4,
-    'Enemy2': 4
+    'Enemy1': 6,
+    'Enemy2': 6
 }
 
 PLAYER_KEY_UP = {'Player1': pygame.K_UP, 'Player2': pygame.K_w}
@@ -35,7 +37,7 @@ PLAYER_KEY_SHOOT = {'Player1': pygame.K_RCTRL, 'Player2': pygame.K_LCTRL}
 EVENT_ENEMY = pygame.USEREVENT + 1
 EVENT_TIMEOUT = pygame.USEREVENT + 2
 
-SPAWN_TIME = 1000
+SPAWN_TIME = 500
 
 TIMEOUT_STEP = 100  # 100ms
 TIMEOUT_LEVEL = 30000  # 30s
