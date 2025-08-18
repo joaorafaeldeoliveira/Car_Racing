@@ -25,12 +25,15 @@ class EntityFactory:
         return list_bg
 
       case 'Player1':
-        return Player('Player1', (WIN_WIDTH / 2, WIN_HEIGHT - 100))
+        return Player('Player1', (WIN_WIDTH / 2 - 50, WIN_HEIGHT - 100))
+
+      case 'Player2':
+        return Player('Player2', (WIN_WIDTH / 2 + 50, WIN_HEIGHT - 100))
 
       case 'Enemy1':
         return Enemy('Enemy1',
-                     (WIN_WIDTH / 2, random.randint(10, WIN_HEIGHT - 40)))
+                     (random.randint(50, WIN_WIDTH - 206), -WIN_HEIGHT))
 
       case 'Enemy2':
         return Enemy('Enemy2',
-                     (WIN_WIDTH / 2, random.randint(10, WIN_HEIGHT - 40)))
+                     (random.randint(50, WIN_WIDTH - 206), -WIN_HEIGHT))
