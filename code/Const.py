@@ -15,7 +15,14 @@ WIN_HEIGHT = 512
 MENU_OPTION = ('NEW GAME 1P', 'NEW GAME 2P - COOPERATIVE',
                'NEW GAME 2P - COMPETITIVE', 'SCORE', 'EXIT')
 
-ENTITY_SPEED = {'Level1Bg0': 4, 'Level1Bg1': 2, 'Level1Bg2': 2, 'Player1': 3}
+ENTITY_SPEED = {
+    'Level1Bg0': 4,
+    'Level1Bg1': 2,
+    'Level1Bg2': 2,
+    'Player1': 3,
+    'Enemy1': 4,
+    'Enemy2': 5
+}
 
 PLAYER_KEY_UP = {'Player1': pygame.K_UP, 'Player2': pygame.K_w}
 PLAYER_KEY_DOWN = {'Player1': pygame.K_DOWN, 'Player2': pygame.K_s}
@@ -30,4 +37,4 @@ EVENT_TIMEOUT = pygame.USEREVENT + 2
 SPAWN_TIME = 2000
 
 TIMEOUT_STEP = 100  # 100ms
-TIMEOUT_LEVEL = 5000  # 20s
+TIMEOUT_LEVEL = 3000  # 30s

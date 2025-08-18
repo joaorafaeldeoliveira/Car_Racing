@@ -1,8 +1,10 @@
 from code.Const import C_CYAN, C_WHITE, EVENT_ENEMY, MENU_OPTION, SPAWN_TIME, WIN_HEIGHT, C_GREEN, EVENT_TIMEOUT, TIMEOUT_STEP, TIMEOUT_LEVEL
 from code.Entity import Entity
 from code.Player import Player
+from code.Enemy import Enemy
 from code.EntityFactory import EntityFactory
 import pygame
+import random
 
 
 class Level:
@@ -29,10 +31,27 @@ class Level:
         self.window.blit(source=ent.surf, dest=ent.rect)
         ent.move()
 
+      self.entity_list = [
+          ent for ent in self.entity_list
+          if not (isinstance(ent, Enemy) and ent.rect.top > WIN_HEIGHT)
+      ]
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
           pygame.quit()
           quit()
+
+        if event.type == EVENT_ENEMY:
+          choice = random.choice(('Enemy1', 'Enemy2'))
+          self.entity_list.append(EntityFactory.get_entity(choice))
+        if event.type == EVENT_TIMEOUT:
+          self.timeout -= TIMEOUT_STEP
+          if self.timeout == 0:
+            for ent in self.entity_list:
+              if isinstance(ent, Player) and ent.name == 'Player1':
+                pass
+              if isinstance(ent, Player) and ent.name == 'Player2':
+                pass
+            return True
 
       found_player = False
       for ent in self.entity_list:
