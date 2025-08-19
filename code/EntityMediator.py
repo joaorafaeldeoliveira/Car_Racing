@@ -34,12 +34,11 @@ class EntityMediator:
           ent2.last_dmg = ent1.name
           ent1.damage_cooldown = 30
           ent2.damage_cooldown = 30
-          
-          # Lose points on collision (only players lose points)
+
           if isinstance(ent1, Player):
-            ent1.score = max(0, ent1.score - 20)  # Lose 20 points, minimum 0
+            ent1.score = max(0, ent1.score - 20)
           if isinstance(ent2, Player):
-            ent2.score = max(0, ent2.score - 20)  # Lose 20 points, minimum 0
+            ent2.score = max(0, ent2.score - 20)
 
   @staticmethod
   def verify_collision(entity_list: list[Entity]):

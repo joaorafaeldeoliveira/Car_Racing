@@ -41,7 +41,6 @@ class Level:
         self.window.blit(source=ent.surf, dest=ent.rect)
         ent.move()
 
-        # Update damage cooldown
         if hasattr(ent, 'damage_cooldown') and ent.damage_cooldown > 0:
           ent.damage_cooldown -= 1
 
@@ -55,18 +54,14 @@ class Level:
             self.level_text(14, f'Player2: {ent.health} | Score: {ent.score}',
                             health_color, (10, 45))
 
-      # Display level info and timer
-      time_left = max(0, self.timeout // 1000)  # Convert to seconds
+      time_left = max(0, self.timeout // 1000)
       self.level_text(16, f'{self.name} - Time: {time_left}s', C_WHITE,
                       (10, 5))
 
-      # Check collisions and apply damage
       EntityMediator.verify_collision(self.entity_list)
 
-      # Remove dead entities (health <= 0)
       EntityMediator.verify_health(self.entity_list)
 
-      # Remove enemies that went off-screen
       self.entity_list = [
           ent for ent in self.entity_list
           if not (isinstance(ent, Enemy) and ent.rect.top > WIN_HEIGHT)
@@ -81,32 +76,29 @@ class Level:
           self.entity_list.append(EntityFactory.get_entity(choice))
 
         if event.type == EVENT_SCORE:
-          # Increase score every second for all players
+
           for ent in self.entity_list:
             if isinstance(ent, Player):
-              ent.score += 10  # Add 10 points every second
-
+              ent.score += 10
         if event.type == EVENT_TIMEOUT:
           self.timeout -= TIMEOUT_STEP
           if self.timeout == 0:
-            # Save scores before completing level
+
             for ent in self.entity_list:
               if isinstance(ent, Player):
                 if ent.name == 'Player1':
                   player_score[0] = ent.score
                 elif ent.name == 'Player2':
                   player_score[1] = ent.score
-            # Level completed! Show completion message
+
             print(f"Level {self.name} completed! Progressing to next level...")
             return True
 
-      # Check if any players are still alive
       alive_players = [
           ent for ent in self.entity_list if isinstance(ent, Player)
       ]
 
       if len(alive_players) == 0:
-        # Save scores before game over
         for ent in self.entity_list:
           if isinstance(ent, Player):
             if ent.name == 'Player1':
