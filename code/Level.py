@@ -1,4 +1,4 @@
-from code.Const import C_CYAN, C_WHITE, EVENT_ENEMY, MENU_OPTION, SPAWN_TIME, WIN_HEIGHT, C_GREEN, EVENT_TIMEOUT, TIMEOUT_STEP, TIMEOUT_LEVEL, WIN_WIDTH, C_RED, EVENT_SCORE, SCORE_TIME
+from code.Const import C_CYAN, C_WHITE, EVENT_ENEMY, MENU_OPTION, SPAWN_TIME, WIN_HEIGHT, C_GREEN, EVENT_TIMEOUT, TIMEOUT_STEP, TIMEOUT_LEVEL, C_RED, EVENT_SCORE, SCORE_TIME
 from code.Entity import Entity
 from code.Player import Player
 from code.Enemy import Enemy
@@ -11,7 +11,8 @@ import random
 
 class Level:
 
-  def __init__(self, window, name: str, game_mode: str):
+  def __init__(self, window, name: str, game_mode: str,
+               player_score: list[int]):
 
     self.timeout = TIMEOUT_LEVEL
     self.window = window
@@ -20,28 +21,30 @@ class Level:
     self.entity_list: list[Entity] = []
     self.entity_list.extend(EntityFactory.get_entity(self.name + 'Bg'))
     player = EntityFactory.get_entity('Player1')
+    player.score = player_score[0]
     self.entity_list.append(player)
 
     if game_mode in [MENU_OPTION[1], MENU_OPTION[2]]:
       player = EntityFactory.get_entity('Player2')
+      player.score = player_score[1]
       self.entity_list.append(player)
 
     pygame.time.set_timer(EVENT_ENEMY, SPAWN_TIME)
     pygame.time.set_timer(EVENT_TIMEOUT, TIMEOUT_STEP)
     pygame.time.set_timer(EVENT_SCORE, SCORE_TIME)
 
-  def run(self):
+  def run(self, player_score: list[int]):
     clock = pygame.time.Clock()
     while True:
       clock.tick(60)
       for ent in self.entity_list:
         self.window.blit(source=ent.surf, dest=ent.rect)
         ent.move()
-        
+
         # Update damage cooldown
         if hasattr(ent, 'damage_cooldown') and ent.damage_cooldown > 0:
           ent.damage_cooldown -= 1
-        
+
         if isinstance(ent, (Player, Enemy)):
           if ent.name == 'Player1':
             health_color = C_GREEN if ent.health > 3 else C_RED
@@ -51,17 +54,18 @@ class Level:
             health_color = C_CYAN if ent.health > 3 else C_RED
             self.level_text(14, f'Player2: {ent.health} | Score: {ent.score}',
                             health_color, (10, 45))
-      
+
       # Display level info and timer
       time_left = max(0, self.timeout // 1000)  # Convert to seconds
-      self.level_text(16, f'{self.name} - Time: {time_left}s', C_WHITE, (10, 5))
-      
+      self.level_text(16, f'{self.name} - Time: {time_left}s', C_WHITE,
+                      (10, 5))
+
       # Check collisions and apply damage
       EntityMediator.verify_collision(self.entity_list)
-      
-      # Remove dead entities (health <= 0)  
+
+      # Remove dead entities (health <= 0)
       EntityMediator.verify_health(self.entity_list)
-      
+
       # Remove enemies that went off-screen
       self.entity_list = [
           ent for ent in self.entity_list
@@ -75,13 +79,13 @@ class Level:
         if event.type == EVENT_ENEMY:
           choice = random.choice(('Enemy1', 'Enemy2'))
           self.entity_list.append(EntityFactory.get_entity(choice))
-        
+
         if event.type == EVENT_SCORE:
           # Increase score every second for all players
           for ent in self.entity_list:
             if isinstance(ent, Player):
               ent.score += 10  # Add 10 points every second
-        
+
         if event.type == EVENT_TIMEOUT:
           self.timeout -= TIMEOUT_STEP
           if self.timeout == 0:
@@ -90,8 +94,10 @@ class Level:
             return True
 
       # Check if any players are still alive
-      alive_players = [ent for ent in self.entity_list if isinstance(ent, Player)]
-      
+      alive_players = [
+          ent for ent in self.entity_list if isinstance(ent, Player)
+      ]
+
       if len(alive_players) == 0:
         print("Game Over - All players died!")
         return False
