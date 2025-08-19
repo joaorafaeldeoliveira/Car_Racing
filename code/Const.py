@@ -7,7 +7,7 @@ C_WHITE = (255, 255, 255)
 C_GREEN = (0, 128, 0)
 C_CYAN = (0, 128, 128)
 C_RED = (255, 0, 0)
-C_BLACK =(0, 0, 0)
+C_BLACK = (0, 0, 0)
 
 #Medidas
 WIN_WIDTH = 512
@@ -17,6 +17,8 @@ WIN_HEIGHT = 512
 MENU_OPTION = ('NEW GAME 1P', 'NEW GAME 2P - COOPERATIVE',
                'NEW GAME 2P - COMPETITIVE', 'SCORE', 'EXIT')
 
+#ENTITY STATUS
+
 ENTITY_SPEED = {
     'Level1Bg0': 4,
     'Level1Bg1': 2,
@@ -25,6 +27,43 @@ ENTITY_SPEED = {
     'Player2': 3,
     'Enemy1': 6,
     'Enemy2': 6
+}
+ENTITY_HEALTH = {
+    'Level1Bg0': 999,
+    'Level1Bg1': 999,
+    'Level1Bg2': 999,
+    'Level2Bg0': 999,
+    'Level2Bg1': 999,
+    'Level2Bg2': 999,
+    'Player1': 10,
+    'Player2': 10,
+    'Enemy1': 10,
+    'Enemy2': 10,
+}
+
+ENTITY_DAMAGE = {
+    'Level1Bg0': 0,
+    'Level1Bg1': 1,
+    'Level1Bg2': 1,
+    'Level2Bg0': 0,
+    'Level2Bg1': 1,
+    'Level2Bg2': 1,
+    'Player1': 1,
+    'Player2': 1,
+    'Enemy1': 5,
+    'Enemy2': 5,
+}
+ENTITY_SCORE = {
+    'Level1Bg0': 0,
+    'Level1Bg1': 0,
+    'Level1Bg2': 0,
+    'Level2Bg0': 0,
+    'Level2Bg1': 0,
+    'Level2Bg2': 0,
+    'Player1': 0,
+    'Player2': 0,
+    'Enemy1': 100,
+    'Enemy2': 125,
 }
 
 PLAYER_KEY_UP = {'Player1': pygame.K_UP, 'Player2': pygame.K_w}

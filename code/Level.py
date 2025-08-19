@@ -1,8 +1,10 @@
-from code.Const import C_CYAN, C_WHITE, EVENT_ENEMY, MENU_OPTION, SPAWN_TIME, WIN_HEIGHT, C_GREEN, EVENT_TIMEOUT, TIMEOUT_STEP, TIMEOUT_LEVEL
+from code.Const import C_CYAN, C_WHITE, EVENT_ENEMY, MENU_OPTION, SPAWN_TIME, WIN_HEIGHT, C_GREEN, EVENT_TIMEOUT, TIMEOUT_STEP, TIMEOUT_LEVEL, WIN_WIDTH, C_RED
 from code.Entity import Entity
 from code.Player import Player
 from code.Enemy import Enemy
 from code.EntityFactory import EntityFactory
+from code.EntityMediator import EntityMediator
+from pygame.font import Font
 import pygame
 import random
 
@@ -34,7 +36,23 @@ class Level:
       for ent in self.entity_list:
         self.window.blit(source=ent.surf, dest=ent.rect)
         ent.move()
-
+        if isinstance(ent, (Player, Enemy)):
+          if ent.name == 'Player1':
+            health_color = C_GREEN if ent.health > 3 else C_RED
+            self.level_text(14, f'Player1: {ent.health} | Score: {ent.score}',
+                            health_color, (10, 25))
+          if ent.name == 'Player2':
+            health_color = C_CYAN if ent.health > 3 else C_RED
+            self.level_text(14, f'Player2: {ent.health} | Score: {ent.score}',
+                            health_color, (10, 45))
+      
+      # Check collisions and apply damage
+      EntityMediator.verify_collision(self.entity_list)
+      
+      # Remove dead entities (health <= 0)  
+      self.entity_list = EntityMediator.verify_health(self.entity_list)
+      
+      # Remove enemies that went off-screen
       self.entity_list = [
           ent for ent in self.entity_list
           if not (isinstance(ent, Enemy) and ent.rect.top > WIN_HEIGHT)
@@ -66,3 +84,13 @@ class Level:
         return False
 
       pygame.display.flip()
+
+  def level_text(self, text_size: int, text: str, text_color: tuple,
+                 text_pos: tuple):
+    text_font: Font = pygame.font.SysFont(name="Lucida Sans Typewriter",
+                                          size=text_size)
+    text_surf: pygame.Surface = text_font.render(text, True,
+                                                 text_color).convert_alpha()
+    text_rect: pygame.Rect = text_surf.get_rect(left=text_pos[0],
+                                                top=text_pos[1])
+    self.window.blit(source=text_surf, dest=text_rect)
