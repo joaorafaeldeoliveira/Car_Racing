@@ -20,8 +20,8 @@ class EntityFactory:
       case 'Level2Bg':
         list_bg = []
         for i in range(3):
-          list_bg.append(Background(f'Level1Bg{i}', (0, 0)))
-          list_bg.append(Background(f'Level1Bg{i}', (0, WIN_HEIGHT)))
+          list_bg.append(Background(f'Level2Bg{i}', (0, 0)))
+          list_bg.append(Background(f'Level2Bg{i}', (0, WIN_HEIGHT)))
         return list_bg
 
       case 'Player1':
