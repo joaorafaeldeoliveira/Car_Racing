@@ -20,10 +20,11 @@ class Game:
         level = Level(self.window, 'Level1', menu_return)
         level_return = level.run()
         if level_return:
-          level = Level(self.window, 'Level1', menu_return)
+          level = Level(self.window, 'Level2', menu_return)
           level_return = level.run()
           if level_return:
             pass
+          pass
 
       elif menu_return == MENU_OPTION[3]:
         pass

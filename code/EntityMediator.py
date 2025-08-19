@@ -1,6 +1,5 @@
 from code.Player import Player
-from code.Background import Background
-from code.Const import WIN_HEIGHT, WIN_WIDTH
+from code.Const import WIN_HEIGHT
 from code.Entity import Entity
 from code.Enemy import Enemy
 
@@ -15,7 +14,6 @@ class EntityMediator:
 
   @staticmethod
   def __verify_collision_entity(ent1, ent2):
-    # Only check collision between Player and Enemy (not background)
     valid_interaction = False
     if isinstance(ent1, Enemy) and isinstance(ent2, Player):
       valid_interaction = True
@@ -23,19 +21,17 @@ class EntityMediator:
       valid_interaction = True
 
     if valid_interaction:
-      # More precise collision detection - check for actual overlap
-      overlap_x = min(ent1.rect.right, ent2.rect.right) - max(ent1.rect.left, ent2.rect.left)
-      overlap_y = min(ent1.rect.bottom, ent2.rect.bottom) - max(ent1.rect.top, ent2.rect.top)
-      
-      # Only trigger collision if there's significant overlap (at least 15 pixels in both directions)
+      overlap_x = min(ent1.rect.right, ent2.rect.right) - max(
+          ent1.rect.left, ent2.rect.left)
+      overlap_y = min(ent1.rect.bottom, ent2.rect.bottom) - max(
+          ent1.rect.top, ent2.rect.top)
+
       if overlap_x > 15 and overlap_y > 15:
-        # Prevent repeated damage using cooldown system
         if ent1.damage_cooldown <= 0 and ent2.damage_cooldown <= 0:
           ent1.health -= ent2.damage
           ent2.health -= ent1.damage
           ent1.last_dmg = ent2.name
           ent2.last_dmg = ent1.name
-          # Set cooldown to prevent immediate re-damage (30 frames = 0.5 seconds at 60fps)
           ent1.damage_cooldown = 30
           ent2.damage_cooldown = 30
 

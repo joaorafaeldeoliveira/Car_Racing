@@ -52,6 +52,10 @@ class Level:
             self.level_text(14, f'Player2: {ent.health} | Score: {ent.score}',
                             health_color, (10, 45))
       
+      # Display level info and timer
+      time_left = max(0, self.timeout // 1000)  # Convert to seconds
+      self.level_text(16, f'{self.name} - Time: {time_left}s', C_WHITE, (10, 5))
+      
       # Check collisions and apply damage
       EntityMediator.verify_collision(self.entity_list)
       
@@ -81,19 +85,15 @@ class Level:
         if event.type == EVENT_TIMEOUT:
           self.timeout -= TIMEOUT_STEP
           if self.timeout == 0:
-            for ent in self.entity_list:
-              if isinstance(ent, Player) and ent.name == 'Player1':
-                pass
-              if isinstance(ent, Player) and ent.name == 'Player2':
-                pass
+            # Level completed! Show completion message
+            print(f"Level {self.name} completed! Progressing to next level...")
             return True
 
-      found_player = False
-      for ent in self.entity_list:
-        if isinstance(ent, Player):
-          found_player = True
-
-      if not found_player:
+      # Check if any players are still alive
+      alive_players = [ent for ent in self.entity_list if isinstance(ent, Player)]
+      
+      if len(alive_players) == 0:
+        print("Game Over - All players died!")
         return False
 
       pygame.display.flip()
