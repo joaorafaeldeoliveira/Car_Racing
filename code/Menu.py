@@ -17,15 +17,15 @@ class Menu:
     # pygame.mixer_music.play(-1)
     while True:
       self.window.blit(source=self.surf, dest=self.rect)
-      self.menu_text(50, "CAR", C_RED, ((WIN_WIDTH / 2), 70))
-      self.menu_text(50, "RACING", C_RED, ((WIN_WIDTH / 2), 120))
+      self.menu_text(80, "CAR", C_RED, ((WIN_WIDTH / 2), 70))
+      self.menu_text(80, "RACING", C_RED, ((WIN_WIDTH / 2), 120))
 
       for i in range(len(MENU_OPTION)):
         if i == menu_option:
-          self.menu_text(20, MENU_OPTION[i], C_ORANGE,
+          self.menu_text(30, MENU_OPTION[i], C_ORANGE,
                          ((WIN_WIDTH / 2), 250 + 25 * i))
         else:
-          self.menu_text(20, MENU_OPTION[i], C_BLACK,
+          self.menu_text(30, MENU_OPTION[i], C_BLACK,
                          ((WIN_WIDTH / 2), 250 + 25 * i))
       pygame.display.flip()
 
@@ -49,7 +49,7 @@ class Menu:
 
   def menu_text(self, text_size: int, text: str, text_color: tuple,
                 text_center_pos: tuple):
-    text_font: Font = pygame.font.SysFont(name="Lucida Sans Typewriter",
+    text_font: Font = pygame.font.SysFont(name="Russo One",
                                           size=text_size)
     text_surf: Surface = text_font.render(text, True,
                                           text_color).convert_alpha()
