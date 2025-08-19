@@ -1,4 +1,4 @@
-from code.Const import C_CYAN, C_WHITE, EVENT_ENEMY, MENU_OPTION, SPAWN_TIME, WIN_HEIGHT, C_GREEN, EVENT_TIMEOUT, TIMEOUT_STEP, TIMEOUT_LEVEL, WIN_WIDTH, C_RED
+from code.Const import C_CYAN, C_WHITE, EVENT_ENEMY, MENU_OPTION, SPAWN_TIME, WIN_HEIGHT, C_GREEN, EVENT_TIMEOUT, TIMEOUT_STEP, TIMEOUT_LEVEL, WIN_WIDTH, C_RED, EVENT_SCORE, SCORE_TIME
 from code.Entity import Entity
 from code.Player import Player
 from code.Enemy import Enemy
@@ -28,6 +28,7 @@ class Level:
 
     pygame.time.set_timer(EVENT_ENEMY, SPAWN_TIME)
     pygame.time.set_timer(EVENT_TIMEOUT, TIMEOUT_STEP)
+    pygame.time.set_timer(EVENT_SCORE, SCORE_TIME)
 
   def run(self):
     clock = pygame.time.Clock()
@@ -36,6 +37,11 @@ class Level:
       for ent in self.entity_list:
         self.window.blit(source=ent.surf, dest=ent.rect)
         ent.move()
+        
+        # Update damage cooldown
+        if hasattr(ent, 'damage_cooldown') and ent.damage_cooldown > 0:
+          ent.damage_cooldown -= 1
+        
         if isinstance(ent, (Player, Enemy)):
           if ent.name == 'Player1':
             health_color = C_GREEN if ent.health > 3 else C_RED
@@ -50,7 +56,7 @@ class Level:
       EntityMediator.verify_collision(self.entity_list)
       
       # Remove dead entities (health <= 0)  
-      self.entity_list = EntityMediator.verify_health(self.entity_list)
+      EntityMediator.verify_health(self.entity_list)
       
       # Remove enemies that went off-screen
       self.entity_list = [
@@ -65,6 +71,13 @@ class Level:
         if event.type == EVENT_ENEMY:
           choice = random.choice(('Enemy1', 'Enemy2'))
           self.entity_list.append(EntityFactory.get_entity(choice))
+        
+        if event.type == EVENT_SCORE:
+          # Increase score every second for all players
+          for ent in self.entity_list:
+            if isinstance(ent, Player):
+              ent.score += 10  # Add 10 points every second
+        
         if event.type == EVENT_TIMEOUT:
           self.timeout -= TIMEOUT_STEP
           if self.timeout == 0:

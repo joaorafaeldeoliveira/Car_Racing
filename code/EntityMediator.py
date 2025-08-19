@@ -1,6 +1,6 @@
 from code.Player import Player
 from code.Background import Background
-from code.Const import WIN_WIDTH
+from code.Const import WIN_HEIGHT, WIN_WIDTH
 from code.Entity import Entity
 from code.Enemy import Enemy
 
@@ -10,42 +10,34 @@ class EntityMediator:
   @staticmethod
   def __verify_collision_window(ent: Entity):
     if isinstance(ent, Enemy):
-      if ent.rect.right < 0:
+      if ent.rect.top > WIN_HEIGHT:
         ent.health = 0
 
   @staticmethod
   def __verify_collision_entity(ent1, ent2):
+    # Only check collision between Player and Enemy (not background)
     valid_interaction = False
     if isinstance(ent1, Enemy) and isinstance(ent2, Player):
       valid_interaction = True
     if isinstance(ent1, Player) and isinstance(ent2, Enemy):
       valid_interaction = True
-    if isinstance(ent1, Player) and isinstance(ent2, Background):
-      valid_interaction = True
-    if isinstance(ent1, Background) and isinstance(ent2, Player):
-      valid_interaction = True
 
     if valid_interaction:
-      if (ent1.rect.right >= ent2.rect.left
-          and ent1.rect.left <= ent2.rect.right
-          and ent1.rect.top <= ent2.rect.bottom
-          and ent1.rect.bottom >= ent2.rect.top):
-        ent1.health -= ent2.damage
-        ent2.health -= ent1.damage
-        ent1.last_dmg = ent2.name
-        ent2.last_dmg = ent1.name
-
-  @staticmethod
-  def __give_score(enemy: Enemy, entity_list: list[Entity]):
-    if enemy.last_dmg == 'Player1Shoot':
-      for ent in entity_list:
-        if ent.name == 'Player1':
-          ent.score += enemy.score
-
-    elif enemy.last_dmg == 'Player2Shoot':
-      for ent in entity_list:
-        if ent.name == 'Player2':
-          ent.score += enemy.score
+      # More precise collision detection - check for actual overlap
+      overlap_x = min(ent1.rect.right, ent2.rect.right) - max(ent1.rect.left, ent2.rect.left)
+      overlap_y = min(ent1.rect.bottom, ent2.rect.bottom) - max(ent1.rect.top, ent2.rect.top)
+      
+      # Only trigger collision if there's significant overlap (at least 15 pixels in both directions)
+      if overlap_x > 15 and overlap_y > 15:
+        # Prevent repeated damage using cooldown system
+        if ent1.damage_cooldown <= 0 and ent2.damage_cooldown <= 0:
+          ent1.health -= ent2.damage
+          ent2.health -= ent1.damage
+          ent1.last_dmg = ent2.name
+          ent2.last_dmg = ent1.name
+          # Set cooldown to prevent immediate re-damage (30 frames = 0.5 seconds at 60fps)
+          ent1.damage_cooldown = 30
+          ent2.damage_cooldown = 30
 
   @staticmethod
   def verify_collision(entity_list: list[Entity]):
@@ -58,5 +50,6 @@ class EntityMediator:
 
   @staticmethod
   def verify_health(entity_list: list[Entity]):
-    # Create a new list without dead entities
-    return [ent for ent in entity_list if ent.health > 0]
+    for ent in entity_list:
+      if ent.health <= 0:
+        entity_list.remove(ent)

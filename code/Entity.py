@@ -14,6 +14,7 @@ class Entity(ABC):
     self.damage = ENTITY_DAMAGE[self.name]
     self.last_dmg = 'None'
     self.score = ENTITY_SCORE[self.name]
+    self.damage_cooldown = 0
 
   @abstractmethod
   def move(self, ):
