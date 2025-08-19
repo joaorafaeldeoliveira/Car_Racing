@@ -89,6 +89,13 @@ class Level:
         if event.type == EVENT_TIMEOUT:
           self.timeout -= TIMEOUT_STEP
           if self.timeout == 0:
+            # Save scores before completing level
+            for ent in self.entity_list:
+              if isinstance(ent, Player):
+                if ent.name == 'Player1':
+                  player_score[0] = ent.score
+                elif ent.name == 'Player2':
+                  player_score[1] = ent.score
             # Level completed! Show completion message
             print(f"Level {self.name} completed! Progressing to next level...")
             return True
@@ -99,6 +106,13 @@ class Level:
       ]
 
       if len(alive_players) == 0:
+        # Save scores before game over
+        for ent in self.entity_list:
+          if isinstance(ent, Player):
+            if ent.name == 'Player1':
+              player_score[0] = ent.score
+            elif ent.name == 'Player2':
+              player_score[1] = ent.score
         print("Game Over - All players died!")
         return False
 
