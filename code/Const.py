@@ -46,11 +46,11 @@ ENTITY_HEALTH = {
 
 ENTITY_DAMAGE = {
     'Level1Bg0': 0,
-    'Level1Bg1': 1,
-    'Level1Bg2': 1,
+    'Level1Bg1': 0,
+    'Level1Bg2': 0,
     'Level2Bg0': 0,
-    'Level2Bg1': 1,
-    'Level2Bg2': 1,
+    'Level2Bg1': 0,
+    'Level2Bg2': 0,
     'Player1': 1,
     'Player2': 1,
     'Enemy1': 5,
