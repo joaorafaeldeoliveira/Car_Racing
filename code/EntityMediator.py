@@ -18,7 +18,7 @@ class EntityMediator:
       right_sidewalk = ent.rect.centerx > (WIN_WIDTH - SIDEWALK_WIDTH)
 
       if (left_sidewalk or right_sidewalk) and ent.damage_cooldown <= 0:
-        ent.health -= 1
+        ent.health -= 4
         ent.score = max(0, ent.score - 15)
         ent.last_dmg = 'Sidewalk'
         ent.damage_cooldown = 30
